@@ -122,7 +122,7 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
   METHOD get_megademo_html.
     " Megademo player - sequences through all parts automatically
     rv_html =
-`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>MEGADEMO - EAR ASSAULT II</title>` &&
+`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>VIVID VIBES - ABAP DEMO</title>` &&
 `<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#000;font-family:monospace;color:#0f0;` &&
 `display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}` &&
 `#container{position:relative;border:2px solid #0f0}canvas{display:block}` &&
@@ -132,13 +132,13 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `button{background:#0f0;color:#000;border:none;padding:10px 20px;font-family:monospace;font-size:16px;cursor:pointer;margin:10px}` &&
 `button:hover{background:#0c0}.fullscreen{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000}` &&
 `</style></head><body>` &&
-`<h1 style="text-shadow:0 0 20px #0f0;margin-bottom:10px">EAR ASSAULT II - MEGADEMO</h1>` &&
+`<h1 style="text-shadow:0 0 20px #0f0;margin-bottom:10px">VIVID VIBES - ABAP DEMO</h1>` &&
 `<div id="part-info">Loading...</div>` &&
 `<div id="container"><canvas id="glc" width="640" height="400"></canvas>` &&
 `<canvas id="txc" width="640" height="400" style="position:absolute;top:0;left:0;pointer-events:none"></canvas></div>` &&
 `<div id="progress"><div id="pbar"></div></div>` &&
 `<div id="info">Click START to begin</div>` &&
-`<button id="btn-start">▶ START MEGADEMO</button>` &&
+`<button id="btn-start">▶ START DEMO</button>` &&
 `<audio id="au" preload="auto"></audio>`.
 
     rv_html = rv_html &&
@@ -146,7 +146,9 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `void main(){gl_Position=vec4(aPos.x/320.0-1.0,1.0-aPos.y/200.0,0.0,1.0);vCol=aCol;}</script>` &&
 `<script id="fs" type="x-shader/x-fragment">precision mediump float;varying vec3 vCol;void main(){gl_FragColor=vec4(vCol,1.0);}</script>` &&
 `<script>` &&
-`var gl,tx,au,ws,playing=0,frame=0,megademo=null,currentPart=0,partStartTime=0;` &&
+`var gl,tx,au,ws,playing=0,frame=0,megademo=null,currentPart=0,partStartTime=0,imgCache={};` &&
+`function loadImg(n){if(!n||imgCache[n])return;imgCache[n]='loading';var img=new Image();` &&
+`img.onload=(function(k,i){return function(){imgCache[k]=i;};})(n,img);img.src='?image='+n;}` &&
 `var BPM=152,FPS=30,BAR_SEC=1.5789,SEC_PER_TICK=BAR_SEC/64,TOTAL_BARS=116;` &&
 `var glc=document.getElementById('glc'),txc=document.getElementById('txc');` &&
 `gl=glc.getContext('webgl');tx=txc.getContext('2d');au=document.getElementById('au');` &&
@@ -188,6 +190,9 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `gl.drawArrays(gl.LINES,0,d.l.length*2);}` &&
 `if(d.tx)for(var j=0;j<d.tx.length;j++){var t=d.tx[j];tx.fillStyle=t.c;tx.font=(t.s||16)+'px monospace';` &&
 `tx.textAlign=t.align||'center';tx.fillText(t.t,t.x,t.y);}` &&
+`if(d.img&&window.imgCache)for(var j=0;j<d.img.length;j++){var im=d.img[j],cached=imgCache[im.n];` &&
+`if(cached&&cached.complete)tx.drawImage(cached,im.x,im.y,im.w,im.h);}` &&
+`if(d.flash){var fl=d.flash,a=fl.intensity||0.5;tx.fillStyle='rgba(255,255,255,'+a+')';tx.fillRect(0,0,640,400);}` &&
 `updateProgress();}`.
 
     rv_html = rv_html &&
@@ -198,18 +203,26 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `' | Bar: '+Math.floor(elapsed/BAR_SEC)+'/'+part.bars+' | '+part.name;` &&
 `if(elapsed>=duration-0.1){nextPart();}}` &&
 `function nextPart(){currentPart++;if(currentPart>=megademo.parts.length){` &&
-`document.getElementById('part-info').textContent='MEGADEMO COMPLETE!';` &&
+`document.getElementById('part-info').textContent='DEMO COMPLETE!';` &&
 `document.getElementById('info').textContent='Thanks for watching!';playing=0;return;}` &&
 `loadPart(megademo.parts[currentPart]);}` &&
-`function loadPart(part){document.getElementById('part-info').textContent='► '+part.name+' ('+part.bpm+' BPM, '+part.bars+' bars)';` &&
-`BPM=part.bpm;BAR_SEC=240/BPM;SEC_PER_TICK=BAR_SEC/64;sI=SEC_PER_TICK*1000/FPT;FPS=BPM/3.75;cT=0;cS=0;lT=0;` &&
+`var partReady=0,mediaLoaded=0;` &&
+`function loadPart(part){partReady=0;mediaLoaded=0;document.getElementById('part-info').textContent='Loading '+part.name+'...';` &&
+`BPM=part.bpm;BAR_SEC=240/BPM;SEC_PER_TICK=BAR_SEC/64;cT=0;cS=0;lT=0;` &&
 `ws.send(JSON.stringify({cmd:'load_demo',demo:part.id}));` &&
 `au.src='?audio='+part.audio;au.load();` &&
-`au.oncanplaythrough=function(){au.oncanplaythrough=null;au.play();partStartTime=Date.now();rq();};}` &&
-`var FPT=1,sI=SEC_PER_TICK*1000/FPT,cT=0,cS=0,lT=0;` &&
-`function rq(){if(!playing)return;var n=performance.now();` &&
-`if(n-lT>=sI){lT=n;if(ws&&ws.readyState===1)ws.send(JSON.stringify({cmd:'frame',tick:cT,sub:cS}));` &&
-`cS++;if(cS>=FPT){cS=0;cT++;}}requestAnimationFrame(rq);}`.
+`au.oncanplaythrough=function(){au.oncanplaythrough=null;mediaLoaded=1;tryStartPart();};}` &&
+`function onConfigReady(){partReady=1;sI=SEC_PER_TICK*1000/FPT;tryStartPart();}` &&
+`function tryStartPart(){if(!partReady||!mediaLoaded)return;var part=megademo.parts[currentPart];` &&
+`document.getElementById('part-info').textContent='► '+part.name+' ('+BPM+' BPM, FPT='+FPT+', '+Math.round(FPS)+' fps)';` &&
+`au.play();partStartTime=Date.now();lT=performance.now();rq();}` &&
+`var FPT=1,FPS=20,sI=50,cT=0,cS=0,lT=0,fpsCount=0,fpsTime=0;` &&
+`function rq(){if(!playing)return;var n=performance.now(),aT=au.currentTime;` &&
+`if(n-lT>=sI){lT=n;fpsCount++;if(n-fpsTime>=1000){document.getElementById('info').textContent=` &&
+`'Part '+(currentPart+1)+'/'+megademo.parts.length+' | '+fpsCount+' fps | Bar '+Math.floor(aT/BAR_SEC);fpsCount=0;fpsTime=n;}` &&
+`var tick=Math.floor(aT/SEC_PER_TICK),sub=Math.floor((aT/SEC_PER_TICK-tick)*FPT);` &&
+`if(ws&&ws.readyState===1)ws.send(JSON.stringify({cmd:'frame',tick:tick,sub:sub}));}` &&
+`requestAnimationFrame(rq);}`.
 
     rv_html = rv_html &&
 `function connect(){document.getElementById('info').textContent='Connecting...';` &&
@@ -220,7 +233,9 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `ws.onmessage=function(e){try{var d=JSON.parse(e.data);` &&
 `if(d.type==='megademo'){megademo=d;document.getElementById('part-info').textContent=d.name;` &&
 `document.getElementById('info').textContent='Ready! '+d.parts.length+' parts. Click START.';}` &&
-`else if(d.type==='config'){BPM=d.bpm;BAR_SEC=d.bar_sec;FPS=d.fps;FPT=d.fpt||1;TOTAL_BARS=d.total_bars;sI=SEC_PER_TICK*1000/FPT;}` &&
+`else if(d.type==='config'){BPM=d.bpm;BAR_SEC=d.bar_sec;FPS=d.fps;FPT=d.fpt||1;TOTAL_BARS=d.total_bars;SEC_PER_TICK=BAR_SEC/64;` &&
+`ws.send(JSON.stringify({cmd:'get_scenario'}));onConfigReady();}` &&
+`else if(d.type==='scenario'&&d.media){for(var i=0;i<d.media.length;i++){if(d.media[i].type==='img')loadImg(d.media[i].name);}}` &&
 `else if(!d.type){rf(d);}}catch(x){}};}` &&
 `function startMegademo(){if(!megademo||!megademo.parts.length)return;` &&
 `document.getElementById('btn-start').style.display='none';` &&
@@ -228,7 +243,7 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `document.getElementById('btn-start').onclick=startMegademo;` &&
 `document.onkeydown=function(e){if(e.key===' '){e.preventDefault();if(!playing&&megademo)startMegademo();}` &&
 `if(e.key==='f'){glc.parentElement.classList.toggle('fullscreen');}};` &&
-`tx.fillStyle='#0f0';tx.font='24px monospace';tx.textAlign='center';tx.fillText('MEGADEMO',320,200);connect();` &&
+`tx.fillStyle='#0f0';tx.font='24px monospace';tx.textAlign='center';tx.fillText('VIVID VIBES',320,200);connect();` &&
 `</script></body></html>`.
   ENDMETHOD.
 
@@ -293,7 +308,7 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
       |\{"name":"ZO4D_26_JULIAMORPH","type":"img"\},| &&
       |\{"name":"ZO4D_27_CONSTELL","type":"img"\}]|.
 
-    rv_json = |\{"name":"EAR ASSAULT II","version":"1.0","bpm":152,"fps":30,| &&
+    rv_json = |\{"name":"VIVID VIBES","version":"1.0","bpm":152,"fps":30,| &&
               |"bar_sec":1.578947368,"total_bars":116,"audio":"?audio=ZOISEE-EAR-02.MP3",| &&
               |"media":{ lv_media },| &&
               |"scenes":{ lv_scenes }\}|.

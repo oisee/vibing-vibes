@@ -87,7 +87,7 @@ CLASS ZCL_O4D_APC_HANDLER IMPLEMENTATION.
     init_all_demos( ).
     load_demo( 'main' ).
     mv_running = abap_true. mv_frame_num = 0. mv_last_effect = ''. mv_effect_start_bar = 0.
-    mv_mode = c_mode_viewer.
+    mv_mode = c_mode_viewer.  " Light mode by default (no debug data)
     send_config( i_message_manager ).
   ENDMETHOD.
 
@@ -311,7 +311,7 @@ CLASS ZCL_O4D_APC_HANDLER IMPLEMENTATION.
   METHOD build_demo_outro.
     DATA(lo_demo) = zcl_o4d_demo=>new(
       iv_id    = 'outro'
-      iv_name  = 'EAR ASSAULT II - CREDITS'
+      iv_name  = 'VIVID VIBES - CREDITS'
       iv_bpm   = 94
       iv_fpt   = 3  " 2 frames per tick → ~50 fps
       iv_audio = 'ZOISEE-OUTRO.MP3'
@@ -397,7 +397,7 @@ CLASS ZCL_O4D_APC_HANDLER IMPLEMENTATION.
     ENDLOOP.
     lv_parts = lv_parts && |]|.
 
-    DATA(lv_json) = |\{"type":"megademo","name":"EAR ASSAULT II - MEGADEMO","parts":{ lv_parts }\}|.
+    DATA(lv_json) = |\{"type":"megademo","name":"VIVID VIBES - ABAP DEMO","parts":{ lv_parts }\}|.
     send_text( i_message_manager = i_message_manager iv_text = lv_json ).
   ENDMETHOD.
 
