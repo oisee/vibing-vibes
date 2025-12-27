@@ -139,6 +139,10 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `<div id="progress"><div id="pbar"></div></div>` &&
 `<div id="info">Click START to begin</div>` &&
 `<button id="btn-start">▶ START DEMO</button>` &&
+`<div style="margin-top:10px">` &&
+`<a href="?player=dev&demo=main" style="color:#0ff;margin-right:15px;font-size:12px">⚙ PART 1 (dev)</a>` &&
+`<a href="?player=dev&demo=outro" style="color:#0ff;font-size:12px">⚙ PART 2 (dev)</a>` &&
+`</div>` &&
 `<audio id="au" preload="auto"></audio>`.
 
     rv_html = rv_html &&
@@ -211,7 +215,8 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `BPM=part.bpm;BAR_SEC=240/BPM;SEC_PER_TICK=BAR_SEC/64;cT=0;cS=0;lT=0;` &&
 `ws.send(JSON.stringify({cmd:'load_demo',demo:part.id}));` &&
 `au.src='?audio='+part.audio;au.load();` &&
-`au.oncanplaythrough=function(){au.oncanplaythrough=null;mediaLoaded=1;tryStartPart();};}` &&
+`au.oncanplaythrough=function(){au.oncanplaythrough=null;mediaLoaded=1;tryStartPart();};` &&
+`au.onended=function(){nextPart();};}` &&
 `function onConfigReady(){partReady=1;sI=SEC_PER_TICK*1000/FPT;tryStartPart();}` &&
 `function tryStartPart(){if(!partReady||!mediaLoaded)return;var part=megademo.parts[currentPart];` &&
 `document.getElementById('part-info').textContent='► '+part.name+' ('+BPM+' BPM, FPT='+FPT+', '+Math.round(FPS)+' fps)';` &&
@@ -233,10 +238,10 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `ws.onmessage=function(e){try{var d=JSON.parse(e.data);` &&
 `if(d.type==='megademo'){megademo=d;document.getElementById('part-info').textContent=d.name;` &&
 `document.getElementById('info').textContent='Ready! '+d.parts.length+' parts. Click START.';}` &&
-`else if(d.type==='config'){BPM=d.bpm;BAR_SEC=d.bar_sec;FPS=d.fps;FPT=d.fpt||1;TOTAL_BARS=d.total_bars;SEC_PER_TICK=BAR_SEC/64;` &&
+`else if(d.type==='config'){console.log('CONFIG rx: BPM=',d.bpm,'FPT=',d.fpt,'FPS=',d.fps);BPM=d.bpm;BAR_SEC=d.bar_sec;FPS=d.fps;FPT=d.fpt||1;TOTAL_BARS=d.total_bars;SEC_PER_TICK=BAR_SEC/64;` &&
 `ws.send(JSON.stringify({cmd:'get_scenario'}));onConfigReady();}` &&
 `else if(d.type==='scenario'&&d.media){for(var i=0;i<d.media.length;i++){if(d.media[i].type==='img')loadImg(d.media[i].name);}}` &&
-`else if(!d.type){rf(d);}}catch(x){}};}` &&
+`else if(!d.type){rf(d);}}catch(x){console.error('ERR',x);}};}` &&
 `function startMegademo(){if(!megademo||!megademo.parts.length)return;` &&
 `document.getElementById('btn-start').style.display='none';` &&
 `currentPart=0;playing=1;loadPart(megademo.parts[0]);}` &&
@@ -379,6 +384,10 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `<span style="color:#666">|</span>` &&
 `<button id="b-playcache" style="color:#0f0">▶ CACHED</button>` &&
 `<button id="b-export" style="color:#f80">⏺ EXPORT</button>` &&
+`<button id="b-export30" style="color:#0f0">⏺ JPG30</button>` &&
+`<button id="b-export60" style="color:#ff0">⏺ JPG60</button>` &&
+`<button id="b-png30" style="color:#0ff">⏺ PNG30</button>` &&
+`<button id="b-png60" style="color:#f0f">⏺ PNG60</button>` &&
 `<button id="b-probes" style="color:#f0f">📷 PROBES</button>` &&
 `<button id="b-trace" style="color:#0ff">📊 TRACE</button>` &&
 `<span id="export-status" style="color:#888;font-size:10px"></span>` &&
@@ -538,20 +547,21 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
     rv_html = rv_html &&
 `function cn(){document.getElementById('info').textContent='CONNECTING...';` &&
 `ws=new WebSocket((location.protocol==='https:'?'wss:':'ws:')+'//'+location.host+'/sap/bc/apc/sap/zo4d_demo');` &&
-`ws.onopen=function(){document.getElementById('info').textContent='CONNECTED [DEV:'+DEMO_ID+'] '+BPM+' BPM / '+Math.round(FPS)+' FPS';` &&
+`ws.onopen=function(){document.getElementById('info').textContent='CONNECTED [DEV:'+DEMO_ID+']';` &&
 `if(DEMO_ID!=='main')ws.send(JSON.stringify({cmd:'load_demo',demo:DEMO_ID}));` &&
-`ws.send(JSON.stringify({cmd:'set_mode',mode:mode}));ws.send(JSON.stringify({cmd:'get_scenario'}));};` &&
+`ws.send(JSON.stringify({cmd:'set_mode',mode:mode}));if(DEMO_ID==='main')ws.send(JSON.stringify({cmd:'get_scenario'}));};` &&
 `ws.onclose=function(){document.getElementById('info').textContent='DISCONNECTED';};` &&
-`ws.onmessage=function(e){try{var d=JSON.parse(e.data);` &&
-`if(d.type==='scenario'){scenario=d;TOTAL_BARS=d.total_bars||116;BPM=d.bpm||152;FPT=d.fpt||1;BAR_SEC=240/BPM;` &&
+`ws.onmessage=function(e){console.log('MSG',e.data.substring(0,80));try{var d=JSON.parse(e.data);` &&
+`console.log('d.type=',d.type,'!d.type=',!d.type);if(d.type==='config'){ws.send(JSON.stringify({cmd:'get_scenario'}));}` &&
+`if(d.type==='scenario'){console.log('SCENARIO rx: bars=',d.total_bars,'bpm=',d.bpm,'fpt=',d.fpt,'audio=',d.audio);scenario=d;TOTAL_BARS=d.total_bars||116;BPM=d.bpm||152;FPT=d.fpt||1;BAR_SEC=240/BPM;` &&
 `SEC_PER_TICK=BAR_SEC/64;sI=SEC_PER_TICK*1000/FPT;FPS=d.fps||(1000/sI);` &&
 `if(d.audio)au.src='?audio='+d.audio;` &&
 `if(d.media){d.media.forEach(function(m){if(m.type==='img')loadGalleryImg(m.name);});}` &&
 `buildTimeline();updateInfoLine();}` &&
 `else if(d.type==='mode'){mode=d.mode;document.getElementById('b-mode').textContent=mode.toUpperCase();}` &&
 `else if(d.type==='preload'){handlePreloadFrame(d);}` &&
-`else if(!d.type){rf(d);if(d.debug&&d.debug.frame!==undefined)frame=d.debug.frame;else if(playing)frame++;}}catch(x){}};}` &&
-`function play(){if(!ws||ws.readyState!==1)return;cT=0;cS=0;lT=0;au.play();ws.send('start');playing=1;` &&
+`else if(!d.type){console.log('FRAME rx: lines=',d.lc,'rects=',d.rc,'texts=',d.tc,'effect=',d.e);rf(d);if(d.debug&&d.debug.frame!==undefined)frame=d.debug.frame;else if(playing)frame++;}}catch(x){console.error('ERR',x);}};}` &&
+`function play(){console.log('PLAY called, ws.readyState=',ws?ws.readyState:'null');if(!ws||ws.readyState!==1)return;cT=0;cS=0;lT=0;au.play();ws.send('start');playing=1;console.log('playing set to 1, calling rq()');` &&
 `document.getElementById('b-play').textContent='⏸ PAUSE';rq();}` &&
 `function pause(){if(ws&&ws.readyState===1)ws.send('stop');au.pause();playing=0;` &&
 `document.getElementById('b-play').textContent='▶ PLAY';}` &&
@@ -568,7 +578,7 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `function checkLoop(){if(!loopScene||!playing)return;var ct=au.currentTime;var endTime=loopScene.end_bar*BAR_SEC;` &&
 `if(ct>=endTime){au.currentTime=loopScene.start_bar*BAR_SEC;}}` &&
 `var FPT=1,sI=SEC_PER_TICK*1000/FPT,cT=0,cS=0,lT=0;` &&
-`function rq(){if(!playing)return;checkLoop();var n=performance.now();if(n-lT>=sI){lT=n;` &&
+`function rq(){if(!playing){console.log('rq: not playing');return;}checkLoop();var n=performance.now();if(n-lT>=sI){lT=n;console.log('rq: tick=',cT,'sub=',cS,'sI=',sI);` &&
 `var tt=au.currentTime/SEC_PER_TICK;cT=Math.floor(tt);cS=Math.floor((tt-cT)*FPT);` &&
 `if(ws&&ws.readyState===1)ws.send(JSON.stringify({cmd:'frame',tick:cT,sub:cS}));}requestAnimationFrame(rq);}` &&
 `function seekToBar(b,skipSync){if(!ws||ws.readyState!==1)return;cT=Math.floor(b*64);cS=0;lT=0;ws.send(JSON.stringify({cmd:'seek',bar:b}));` &&
@@ -607,8 +617,8 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `for(var s=0;s<preloadStreams;s++)openPreloadSocket(s);}` &&
 `function openPreloadSocket(idx){var url=(location.protocol==='https:'?'wss:':'ws:')+'//'+location.host+'/sap/bc/apc/sap/zo4d_demo';` &&
 `var sock=new WebSocket(url);preloadSockets[idx]=sock;preloadActive[idx]=0;` &&
-`sock.onopen=function(){sock.send(JSON.stringify({cmd:'set_mode',mode:'dev'}));for(var p=0;p<preloadPipelineDepth;p++)preloadNextFor(idx);};` &&
-`sock.onmessage=function(e){try{var d=JSON.parse(e.data);if(d.type==='preload'){handlePreloadFrame(d,idx);}}catch(x){}};` &&
+`sock.onopen=function(){if(DEMO_ID!=='main'){sock.send(JSON.stringify({cmd:'load_demo',demo:DEMO_ID}));}else{for(var p=0;p<preloadPipelineDepth;p++)preloadNextFor(idx);}sock.send(JSON.stringify({cmd:'set_mode',mode:'dev'}));};` &&
+`sock.onmessage=function(e){try{var d=JSON.parse(e.data);if(d.type==='config'){for(var p=0;p<preloadPipelineDepth;p++)preloadNextFor(idx);}if(d.type==='preload'){handlePreloadFrame(d,idx);}}catch(x){console.error('ERR',x);}};` &&
 `sock.onerror=function(){preloadActive[idx]=0;};sock.onclose=function(){preloadActive[idx]=0;};}` &&
 `function closePreloadSockets(){for(var i=0;i<preloadSockets.length;i++){if(preloadSockets[i]&&preloadSockets[i].readyState<2)preloadSockets[i].close();}preloadSockets=[];}` &&
 `function preloadNextFor(idx){if(!preloading){checkPreloadDone();return;}` &&
@@ -681,6 +691,37 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `var pct=Math.round(frame/preloadProgress.total*100);document.getElementById('export-status').textContent=' REC '+pct+'%';` &&
 `updatePlayhead(cached.gb||0);if(frame<preloadProgress.total){requestAnimationFrame(renderExport);}else{stopExport();}}}renderExport();}` &&
 `function stopExport(){exportMode=0;au.pause();if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop();}` &&
+`var offlineMode=0,offlineFPS=60,offlineFrame=0,offlineTotal=0,offlineStart=0,offlineBlobs=[],offlineFmt='jpeg';` &&
+`var combinedOff=null,cctxOff=null;` &&
+`function startOfflineExport(fps,fmt){if(offlineMode){stopOfflineExport();return;}fmt=fmt||'jpeg';offlineFmt=fmt;` &&
+`var total=Object.keys(frameCache).length;if(total<10){alert('Preload frames first!');return;}` &&
+`pause();offlineMode=1;offlineFPS=fps;offlineFrame=0;offlineStart=Date.now();offlineTotal=total;offlineBlobs=[];` &&
+`combinedOff=document.createElement('canvas');combinedOff.width=640;combinedOff.height=400;cctxOff=combinedOff.getContext('2d');` &&
+`document.getElementById('b-export'+fps).textContent='⏹ STOP';document.getElementById('b-export'+fps).style.color='#f00';` &&
+`document.getElementById('export-status').textContent=' rendering...';renderOfflineFrame();}` &&
+`function renderOfflineFrame(){if(!offlineMode){finishOfflineExport();return;}` &&
+`if(offlineFrame>=offlineTotal){finishOfflineExport();return;}` &&
+`var cached=frameCache[offlineFrame];if(cached){rf(cached);cctxOff.drawImage(glc,0,0);cctxOff.drawImage(txc,0,0);` &&
+`combinedOff.toBlob(function(blob){offlineBlobs.push(blob);offlineFrame++;` &&
+`var pct=Math.round(offlineFrame/offlineTotal*100);var elapsed=(Date.now()-offlineStart)/1000;` &&
+`var spd=elapsed>0?Math.round(offlineFrame/elapsed):0;` &&
+`document.getElementById('export-status').textContent=' '+pct+'% ('+spd+' f/s, '+Math.round(offlineBlobs.length*blob.size/1024/1024)+'MB)';` &&
+`if(offlineMode)setTimeout(renderOfflineFrame,0);},offlineFmt==='png'?'image/png':'image/jpeg',0.92);}else{offlineFrame++;setTimeout(renderOfflineFrame,0);}}` &&
+`function finishOfflineExport(){if(!offlineMode&&offlineBlobs.length===0)return;offlineMode=0;` &&
+`document.getElementById('export-status').textContent=' packing '+offlineBlobs.length+' frames...';` &&
+`var fps=offlineFPS,total=offlineBlobs.length,magic=offlineFmt==='png'?'PNGSEQ':'JPGSEQ',hdr=new TextEncoder().encode(magic+'\\n'+fps+'\\n'+total+'\\n');` &&
+`var parts=[hdr];for(var i=0;i<offlineBlobs.length;i++){var len=new ArrayBuffer(4);new DataView(len).setUint32(0,offlineBlobs[i].size,true);` &&
+`parts.push(len);parts.push(offlineBlobs[i]);}` &&
+`var blob=new Blob(parts,{type:'application/octet-stream'});var url=URL.createObjectURL(blob);` &&
+`var ext=offlineFmt==='png'?'pngseq':'jpgseq';var a=document.createElement('a');a.href=url;a.download=DEMO_ID+'_'+fps+'fps.'+ext;a.click();URL.revokeObjectURL(url);` &&
+`var elapsed=(Date.now()-offlineStart)/1000;var mb=Math.round(blob.size/1024/1024);` &&
+`document.getElementById('export-status').textContent=' saved '+total+' frames ('+mb+'MB, '+Math.round(elapsed)+'s)';` &&
+`document.getElementById('b-export30').textContent='⏺ 30fps';document.getElementById('b-export30').style.color='#0f0';` &&
+`document.getElementById('b-export60').textContent='⏺ 60fps';document.getElementById('b-export60').style.color='#ff0';offlineBlobs=[];}` &&
+`function stopOfflineExport(){offlineMode=0;offlineBlobs=[];` &&
+`document.getElementById('b-export30').textContent='⏺ 30fps';document.getElementById('b-export30').style.color='#0f0';` &&
+`document.getElementById('b-export60').textContent='⏺ 60fps';document.getElementById('b-export60').style.color='#ff0';` &&
+`document.getElementById('export-status').textContent=' cancelled';}` &&
 `var probesPerScene=3;` &&
 `function saveProbes(){if(Object.keys(frameCache).length<10){alert('Preload frames first!');return;}` &&
 `if(!scenario||!scenario.scenes){alert('No scenario!');return;}` &&
@@ -751,6 +792,8 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `document.getElementById('b-preload').onclick=function(){preloading?stopPreload():startPreloadAll();};` &&
 `document.getElementById('b-playcache').onclick=function(){cachedMode?stopCached():startCached();};` &&
 `document.getElementById('b-export').onclick=function(){exportMode?stopExport():startExport();};` &&
+`document.getElementById('b-export30').onclick=function(){startOfflineExport(30);};` &&
+`document.getElementById('b-export60').onclick=function(){startOfflineExport(60);};` &&
 `document.getElementById('b-probes').onclick=saveProbes;` &&
 `document.getElementById('b-trace').onclick=function(){traceMode?finishTrace():startTrace();};` &&
 `document.getElementById('b-reload').onclick=reloadCurrentScene;` &&

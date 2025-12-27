@@ -99,7 +99,7 @@ CLASS ZCL_O4D_GALLERY IMPLEMENTATION.
     " Calculate total cycle duration (sum of all slide durations)
     DATA(lv_cycle_dur) = CONV f( '0.0' ).
     LOOP AT mt_slides INTO DATA(ls_s).
-      lv_cycle_dur = lv_cycle_dur + COND f( WHEN ls_s-long = abap_true THEN lv_base_dur * 2 ELSE lv_base_dur ).
+      lv_cycle_dur = lv_cycle_dur + COND f( WHEN ls_s-long = abap_true THEN lv_base_dur * 4 ELSE lv_base_dur ).
     ENDLOOP.
 
     " Find current position in cycle
@@ -414,8 +414,8 @@ CLASS ZCL_O4D_GALLERY IMPLEMENTATION.
 
   METHOD init_slides.
     mt_slides = VALUE #(
-      ( name = 'ZO4D_30_EARULEZ'    title = 'MAIN MUSIC'         desc = 'EA Rulez! by Oisee'           classname = 'AY-8910 1999 / rmx 2025' long = abap_true )
-      ( name = 'ZO4D_31_OLELUK'     title = 'OUTRO MUSIC'        desc = 'Ole Lukøjle by Oisee'         classname = 'AY-8910 2001 / rmx 2025' long = abap_true )
+      ( name = 'ZO4D_30_EARULEZ'    title = 'MAIN MUSIC'         desc = 'EA Rulez! by Oisee'           classname = 'AY-8910 1999 / rmx 2025' ) "long = abap_true )
+      ( name = 'ZO4D_31_OLELUK'     title = 'OUTRO MUSIC'        desc = 'Ole Lukøjle by Oisee'         classname = 'AY-8910 2001 / rmx 2025' ) "long = abap_true )
       ( name = 'ZO4D_00_SALES'      title = 'SAP SALES CHARTS'   desc = 'Enterprise meets Demoscene'   classname = 'ZCL_O4D_SALES_DANCE' )
       ( name = 'ZO4D_02_IGNITE'     title = 'IGNITION'           desc = 'Particle explosion effect'    classname = 'ZCL_O4D_IGNITION' )
       ( name = 'ZO4D_05_COPPER'     title = 'COPPER BARS'        desc = 'Classic Amiga effect'         classname = 'ZCL_O4D_COPPERBARS' )
@@ -426,9 +426,7 @@ CLASS ZCL_O4D_GALLERY IMPLEMENTATION.
       ( name = 'ZO4D_10_VOXEL'      title = 'VOXEL LANDSCAPE'    desc = 'Comanche-style terrain'       classname = 'ZCL_O4D_VOXEL' )
       ( name = 'ZO4D_11_ROTOPLASMA' title = 'ROTO + PLASMA'      desc = 'Combined effects'             classname = 'ZCL_O4D_ROTOZOOM_PLASMA' )
       ( name = 'ZO4D_12_TESSERACT'  title = 'TESSERACT'          desc = '4D Hypercube projection'      classname = 'ZCL_O4D_TESSERACT' )
-      ( name = 'ZO4D_13_CELL24'     title = '24-CELL'            desc = '4D Polytope - 24 vertices'    classname = 'ZCL_O4D_CELL24' )
-      ( name = 'ZO4D_14_CELL16'     title = '16-CELL'            desc = '4D Polytope - Hyperoctahedron' classname = 'ZCL_O4D_CELL16' )
-      ( name = 'ZO4D_15_CELL120'    title = '120-CELL'           desc = '4D Polytope - 600 vertices'   classname = 'ZCL_O4D_CELL120' )
+      ( name = 'ZO4D_13_CELL24'     title = '24/16/120-CELL'     desc = '4D Polytopes'                 classname = 'ZCL_O4D_CELL*' )
       ( name = 'ZO4D_17_AMIGABALL'  title = 'AMIGA BALL'         desc = 'The iconic bouncing ball'     classname = 'ZCL_O4D_AMIGABALL' )
       ( name = 'ZO4D_18_GLITCH'     title = 'GLITCH'             desc = 'Digital corruption art'       classname = 'ZCL_O4D_GLITCH' )
       ( name = 'ZO4D_19_SIERPINSKI' title = 'SIERPINSKI'         desc = 'Menger Sponge'                classname = 'ZCL_O4D_MENGER' )

@@ -51,6 +51,7 @@ CLASS zcl_o4d_apc_handler DEFINITION
           mo_rotozoom_sine TYPE REF TO zcl_o4d_rotozoom_sine,
           mo_mnt_oops      TYPE REF TO zcl_o4d_mountains_oops.
 
+    METHODS: escape_json IMPORTING iv_text TYPE string RETURNING VALUE(rv_escaped) TYPE string.
     METHODS: init_all_demos,
       create_effects,
       build_demo_main,
@@ -81,6 +82,13 @@ CLASS ZCL_O4D_APC_HANDLER IMPLEMENTATION.
 
 
   METHOD if_apc_wsp_extension~on_accept. e_connect_mode = co_connect_mode_accept. ENDMETHOD.
+
+
+  METHOD escape_json.
+    rv_escaped = iv_text.
+    REPLACE ALL OCCURRENCES OF '\' IN rv_escaped WITH '\\'.
+    REPLACE ALL OCCURRENCES OF '"' IN rv_escaped WITH '\"'.
+  ENDMETHOD.
 
 
   METHOD if_apc_wsp_extension~on_start.
@@ -335,12 +343,14 @@ CLASS ZCL_O4D_APC_HANDLER IMPLEMENTATION.
       `                                                                                                                                       ` &&
       `                                                                                                                                       ` &&
       `                                                                                                                                       ` &&
+      `                                                                                                                                       ` &&
+      `                                                ` &&
       | 8-bit beam of greetings goes to:| &&
       | Scott Hanselman, Paul Modderman, Jelena Perfiljeva, Fred Huet, Holger Bruchelt, Dr. Philip Herzig, Level 9, Infocom, Amit Lal, Prof. Dr. Alexander Zeier, Marian Zeis,| &&
-      | Lars Hvam Petersen, Anthropic, Volker Buzek, Camunda, Filipp Gnilyak, Claude, Parazite, Bizhuka, Sq, Kq, Thomas Jung, Enno Wulff, HallycinoJen, KiM BBS, Marcello Urbani, Martin Pankraz, Emma Qian,| &&
-      | Florian Farr, S. Novikov, Megus, SAP, Devraj Bardhan, IBM, Random/CC, Nora von Thenen, TSL, Ivan Pirog, Nik-O, G_D, JtN, CyberJack, 4D, Triebkraft, Stardust, Gasman, BaZe,| &&
-      | Nova, Aki, Arwel Owen, Edgar Martinez, Dirk Roeckmann, Robin van het Hof, Yurii Sychov, Aλex Nihirash, and you! Thank you for your time! Happy new year! Alice V.| &&
-      | This Oldschool ABAP demo "Vibing Vibes" has been build with "Vibing-Steampunk" and Claude Code CLI|
+      | Lars Hvam Petersen, Anthropic, Volker Buzek, Camunda, Filipp G., Claude, Parazite, Bizhuka, Sq, Kq, Thomas Jung, Enno Wulff, HallycinoJen, KiM BBS, Marcello Urbani, Martin Pankraz, Emma Qian,| &&
+      | Florian Farr, S. Novikov, Megus, SAP, Devraj Bardhan, IBM, Random/CC, Nora von Thenen, TSL, Mistral AI, Ivan Pirog, Nik-O, G_D, JtN, CyberJack, 4D, Triebkraft, Stardust, Gasman, BaZe,| &&
+      | Nova, Aki, Arwel Owen, Edgar Martinez, Dirk Roeckmann, Robin van het Hof, Yurii Sychov, Aλex Nihirash, Introspec, and you! Happy new year! Alice V.| &&
+      | This Oldschool ABAP demo "Vibing Vibes" was build with "Vibing-Steampunk" and Claude Code       |
     ) )  TO lt_scenes.
 *
 *
@@ -691,6 +701,7 @@ CLASS ZCL_O4D_APC_HANDLER IMPLEMENTATION.
   METHOD send_frame.
     DATA: lo_effect TYPE REF TO zif_o4d_effect, ls_frame TYPE zif_o4d_effect=>ty_frame.
     DATA(ls_ctx) = build_render_ctx( iv_global_time ).
+    WRITE: / 'send_frame gt=', iv_global_time, 'bar=', ls_ctx-gbi-bar, 'demo=', mo_demo->get_id( ).
     lo_effect = mo_demo->get_effect_at_bar( ls_ctx-gbi-bar ).
     IF lo_effect IS BOUND. ls_frame = lo_effect->render_frame( ls_ctx ). ENDIF.
     DATA(lv_json) = frame_to_json( is_frame = ls_frame is_ctx = ls_ctx ).
@@ -718,7 +729,7 @@ CLASS ZCL_O4D_APC_HANDLER IMPLEMENTATION.
     lv_texts = |[|.
     LOOP AT is_frame-texts INTO DATA(ls_t).
       IF sy-tabix > 1. lv_texts = lv_texts && |,|. ENDIF.
-      lv_texts = lv_texts && |\{"x":{ ls_t-x },"y":{ ls_t-y },"t":"{ ls_t-text }","c":"{ ls_t-color }","s":{ ls_t-size }\}|.
+      lv_texts = lv_texts && |\{"x":{ ls_t-x },"y":{ ls_t-y },"t":"{ escape_json( ls_t-text ) }","c":"{ ls_t-color }","s":{ ls_t-size }\}|.
     ENDLOOP.
     lv_texts = lv_texts && |]|.
 
