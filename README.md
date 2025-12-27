@@ -116,7 +116,11 @@ A complete demo production built with this framework:
 
 ## Credits
 
-**OISEE + Claude // 2025**
+**Code**: OISEE + Claude // 2025
+
+**Music**:
+- *EA Rulez!* by Oisee (AY-8910 1999 / rmx 2025)
+- *Ole Lukøjle* by Oisee (AY-8910 2001 / rmx 2025)
 
 *Demoscene meets Enterprise!*
 
