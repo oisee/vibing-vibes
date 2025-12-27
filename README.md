@@ -137,6 +137,46 @@ A complete demo production built with this framework:
 
 ---
 
+## Gallery
+
+### Oldschool Effects
+
+| Copper Bars | Plasma | Rotozoom |
+|:-----------:|:------:|:--------:|
+| ![Copper](media/ZO4D_05_COPPER.png) | ![Plasma](media/ZO4D_06_PLASMA.png) | ![Rotozoom](media/ZO4D_09_ROTOZOOM.png) |
+
+| Amiga Ball | Twist Zoomer | Rotoplasma |
+|:----------:|:------------:|:----------:|
+| ![Amiga](media/ZO4D_17_AMIGABALL.png) | ![Twister](media/ZO4D_07_TWISTER.png) | ![Rotoplasma](media/ZO4D_11_ROTOPLASMA.png) |
+
+### 3D / Vector
+
+| Tesseract (4D) | 24-Cell Polytope | 120-Cell Polytope |
+|:--------------:|:----------------:|:-----------------:|
+| ![Tesseract](media/ZO4D_12_TESSERACT.png) | ![Cell24](media/ZO4D_13_CELL24.png) | ![Cell120](media/ZO4D_15_CELL120.png) |
+
+| Torus | Metaballs | Voxel Landscape |
+|:-----:|:---------:|:---------------:|
+| ![Torus](media/ZO4D_25_TORUS.png) | ![Metaballs](media/ZO4D_24_METABALLS.png) | ![Voxel](media/ZO4D_10_VOXEL.png) |
+
+### Fractals
+
+| Quaternion Julia | Julia Morph | Sierpinski |
+|:----------------:|:-----------:|:----------:|
+| ![QuatJulia](media/ZO4D_23_QUATJULIA.png) | ![JuliaMorph](media/ZO4D_26_JULIAMORPH.png) | ![Sierpinski](media/ZO4D_19_SIERPINSKI.png) |
+
+### Landscapes & Visualizers
+
+| Mountains | Neon City | Joy Division |
+|:---------:|:---------:|:------------:|
+| ![Mountains](media/ZO4D_08_MOUNTAINS.png) | ![NeonCity](media/ZO4D_20_NEONCITY.png) | ![JoyDiv](media/ZO4D_21_JOYDIV.png) |
+
+| Constellation | Ignition | Glitch |
+|:-------------:|:--------:|:------:|
+| ![Constellation](media/ZO4D_27_CONSTELL.png) | ![Ignite](media/ZO4D_02_IGNITE.png) | ![Glitch](media/ZO4D_18_GLITCH.png) |
+
+---
+
 ## License
 
 MIT
