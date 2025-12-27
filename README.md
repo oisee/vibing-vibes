@@ -36,22 +36,30 @@ Vivid Vibes is a demoscene engine written entirely in ABAP. It renders classic d
 
 ## Effects
 
-| Effect | Class | Description |
-|--------|-------|-------------|
-| Starfield | `ZCL_O4D_STARFIELD` | 3D hyperspace starfield |
-| Plasma | `ZCL_O4D_PLASMA` | Classic sine-wave plasma |
-| Tunnel | `ZCL_O4D_TUNNEL` | Infinite tunnel with rings |
-| Metaballs | `ZCL_O4D_METABALLS` | Organic blob shapes |
-| Copper Bars | `ZCL_O4D_COPPERBARS` | Amiga-style gradient bars |
-| Joy Division | `ZCL_O4D_JOYDIVISION` | Unknown Pleasures mountains |
-| Elite 3D | `ZCL_O4D_ELITE3D` | Wireframe Cobra Mk III |
-| Glenz | `ZCL_O4D_GLENZ` | Transparent vector objects |
-| Twister | `ZCL_O4D_TWISTER` | 3D rotating text |
-| Rotozoom | `ZCL_O4D_ROTOZOOM` | Rotating/zooming texture |
-| Greetings | `ZCL_O4D_GREETINGS` | Sine wave text scroller |
-| Fractals | `ZCL_O4D_MANDELBULB` | Mandelbrot, Julia, Burning Ship |
+| Preview | Effect | Class |
+|:-------:|--------|-------|
+| ![](media/ZO4D_06_PLASMA.png) | **Plasma** | `ZCL_O4D_PLASMA` |
+| ![](media/ZO4D_05_COPPER.png) | **Copper Bars** | `ZCL_O4D_COPPERBARS` |
+| ![](media/ZO4D_09_ROTOZOOM.png) | **Rotozoom** | `ZCL_O4D_ROTOZOOM` |
+| ![](media/ZO4D_17_AMIGABALL.png) | **Amiga Ball** | `ZCL_O4D_AMIGABALL` |
+| ![](media/ZO4D_07_TWISTER.png) | **Twister** | `ZCL_O4D_TWISTER` |
+| ![](media/ZO4D_24_METABALLS.png) | **Metaballs** | `ZCL_O4D_METABALLS` |
+| ![](media/ZO4D_21_JOYDIV.png) | **Joy Division** | `ZCL_O4D_JOYDIVISION` |
+| ![](media/ZO4D_08_MOUNTAINS.png) | **Mountains** | `ZCL_O4D_MOUNTAINS` |
+| ![](media/ZO4D_10_VOXEL.png) | **Voxel Landscape** | `ZCL_O4D_VOXEL_LANDSCAPE` |
+| ![](media/ZO4D_12_TESSERACT.png) | **Tesseract (4D)** | `ZCL_O4D_TESSERACT` |
+| ![](media/ZO4D_13_CELL24.png) | **24-Cell Polytope** | `ZCL_O4D_CELL24` |
+| ![](media/ZO4D_15_CELL120.png) | **120-Cell Polytope** | `ZCL_O4D_CELL120` |
+| ![](media/ZO4D_25_TORUS.png) | **Torus** | `ZCL_O4D_TORUS` |
+| ![](media/ZO4D_23_QUATJULIA.png) | **Quaternion Julia** | `ZCL_O4D_QUATJULIA` |
+| ![](media/ZO4D_26_JULIAMORPH.png) | **Julia Morph** | `ZCL_O4D_JULIA_MORPH` |
+| ![](media/ZO4D_19_SIERPINSKI.png) | **Sierpinski** | `ZCL_O4D_SIERPINSKI` |
+| ![](media/ZO4D_20_NEONCITY.png) | **Neon City** | `ZCL_O4D_NEONCITY` |
+| ![](media/ZO4D_27_CONSTELL.png) | **Constellation** | `ZCL_O4D_CONSTELLATION` |
+| ![](media/ZO4D_02_IGNITE.png) | **Ignition** | `ZCL_O4D_IGNITION` |
+| ![](media/ZO4D_18_GLITCH.png) | **Glitch** | `ZCL_O4D_GLITCH` |
 
-...and 30+ more effects!
+...and more effects!
 
 ---
 
@@ -134,46 +142,6 @@ A complete demo production built with this framework:
 - *Ole Lukøjle* by Oisee (AY-8910 2001 / rmx 2025)
 
 *Demoscene meets Enterprise!*
-
----
-
-## Gallery
-
-### Oldschool Effects
-
-| Copper Bars | Plasma | Rotozoom |
-|:-----------:|:------:|:--------:|
-| ![Copper](media/ZO4D_05_COPPER.png) | ![Plasma](media/ZO4D_06_PLASMA.png) | ![Rotozoom](media/ZO4D_09_ROTOZOOM.png) |
-
-| Amiga Ball | Twist Zoomer | Rotoplasma |
-|:----------:|:------------:|:----------:|
-| ![Amiga](media/ZO4D_17_AMIGABALL.png) | ![Twister](media/ZO4D_07_TWISTER.png) | ![Rotoplasma](media/ZO4D_11_ROTOPLASMA.png) |
-
-### 3D / Vector
-
-| Tesseract (4D) | 24-Cell Polytope | 120-Cell Polytope |
-|:--------------:|:----------------:|:-----------------:|
-| ![Tesseract](media/ZO4D_12_TESSERACT.png) | ![Cell24](media/ZO4D_13_CELL24.png) | ![Cell120](media/ZO4D_15_CELL120.png) |
-
-| Torus | Metaballs | Voxel Landscape |
-|:-----:|:---------:|:---------------:|
-| ![Torus](media/ZO4D_25_TORUS.png) | ![Metaballs](media/ZO4D_24_METABALLS.png) | ![Voxel](media/ZO4D_10_VOXEL.png) |
-
-### Fractals
-
-| Quaternion Julia | Julia Morph | Sierpinski |
-|:----------------:|:-----------:|:----------:|
-| ![QuatJulia](media/ZO4D_23_QUATJULIA.png) | ![JuliaMorph](media/ZO4D_26_JULIAMORPH.png) | ![Sierpinski](media/ZO4D_19_SIERPINSKI.png) |
-
-### Landscapes & Visualizers
-
-| Mountains | Neon City | Joy Division |
-|:---------:|:---------:|:------------:|
-| ![Mountains](media/ZO4D_08_MOUNTAINS.png) | ![NeonCity](media/ZO4D_20_NEONCITY.png) | ![JoyDiv](media/ZO4D_21_JOYDIV.png) |
-
-| Constellation | Ignition | Glitch |
-|:-------------:|:--------:|:------:|
-| ![Constellation](media/ZO4D_27_CONSTELL.png) | ![Ignite](media/ZO4D_02_IGNITE.png) | ![Glitch](media/ZO4D_18_GLITCH.png) |
 
 ---
 
