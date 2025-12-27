@@ -1,0 +1,58 @@
+         ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+         █                                 █
+         █   ██╗   ██╗██╗██╗   ██╗██╗██████╗   █
+         █   ██║   ██║██║██║   ██║██║██╔══██╗  █
+         █   ██║   ██║██║██║   ██║██║██║  ██║  █
+         █   ╚██╗ ██╔╝██║╚██╗ ██╔╝██║██║  ██║  █
+         █    ╚████╔╝ ██║ ╚████╔╝ ██║██████╔╝  █
+         █     ╚═══╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝   █
+         █                                 █
+         █   ██╗   ██╗██╗██████╗ ███████╗███████╗  █
+         █   ██║   ██║██║██╔══██╗██╔════╝██╔════╝  █
+         █   ██║   ██║██║██████╔╝█████╗  ███████╗  █
+         █   ╚██╗ ██╔╝██║██╔══██╗██╔══╝  ╚════██║  █
+         █    ╚████╔╝ ██║██████╔╝███████╗███████║  █
+         █     ╚═══╝  ╚═╝╚═════╝ ╚══════╝╚══════╝  █
+         █                                 █
+         ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+
+  Real-time demoscene effects running on SAP ABAP
+  ───────────────────────────────────────────────
+
+  Code .......... OISEE + Claude
+  Music ......... Oisee
+                  - EA Rulez! (AY-8910 1999/rmx 2025)
+                  - Ole Lukøjle (AY-8910 2001/rmx 2025)
+
+  Platform ...... SAP NetWeaver ABAP
+  Renderer ...... WebGL/Canvas via WebSocket (APC)
+  Resolution .... 640x400 scalable vectors
+  Frame rate .... 20-60 fps (configurable)
+
+  ───────────────────────────────────────────────
+
+  Effects:
+    Plasma, Copper Bars, Rotozoom, Amiga Ball,
+    Metaballs, Joy Division, Twister, Tunnel,
+    Starfield, Mountains, Voxel Landscape,
+    Tesseract, 24/120-Cell Polytopes, Torus,
+    Quaternion Julia, Sierpinski, Glenz,
+    Elite 3D wireframes, and 30+ more!
+
+  ───────────────────────────────────────────────
+
+  Architecture:
+    ABAP "Scene Engine" calculates all effects
+    Browser "Video Processor" renders frames
+
+  Requirements:
+    SAP NetWeaver 7.50+, abapGit, modern browser
+
+  ───────────────────────────────────────────────
+
+  https://github.com/oisee/vivid-vibes
+  https://youtu.be/4IAPLbqJ2Eo
+
+  ───────────────────────────────────────────────
+           Demoscene meets Enterprise!
+                    // 2025

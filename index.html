@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIVID VIBES - ABAP Demoscene Engine</title>
+  <meta name="description" content="Real-time demoscene effects running in SAP ABAP - Plasma, Metaballs, Fractals, and 30+ effects">
+  <meta property="og:title" content="VIVID VIBES - ABAP Demo">
+  <meta property="og:description" content="Demoscene meets Enterprise - Real-time vector effects in SAP ABAP">
+  <meta property="og:image" content="media/ZO4D_18_GLITCH.png">
+  <meta property="og:url" content="https://github.com/oisee/vivid-vibes">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+
+    h1 {
+      font-size: 3em;
+      text-align: center;
+      text-shadow: 0 0 20px #0f0, 0 0 40px #0f0;
+      margin-bottom: 10px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 20px #0f0, 0 0 40px #0f0; }
+      to { text-shadow: 0 0 30px #0ff, 0 0 60px #0ff; }
+    }
+
+    .tagline {
+      text-align: center;
+      color: #0ff;
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+
+    .video-container {
+      text-align: center;
+      margin: 30px 0;
+    }
+    .video-container a { display: inline-block; position: relative; }
+    .video-container img {
+      max-width: 100%;
+      border: 3px solid #0f0;
+      box-shadow: 0 0 30px rgba(0,255,0,0.5);
+      transition: all 0.3s;
+    }
+    .video-container img:hover {
+      border-color: #0ff;
+      box-shadow: 0 0 50px rgba(0,255,255,0.7);
+    }
+    .play-btn {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 80px;
+      color: #fff;
+      text-shadow: 0 0 20px #000;
+      pointer-events: none;
+    }
+
+    .section { margin: 40px 0; }
+    .section h2 {
+      color: #f0f;
+      border-bottom: 2px solid #f0f;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .architecture {
+      background: #111;
+      border: 1px solid #333;
+      padding: 20px;
+      font-size: 14px;
+      overflow-x: auto;
+    }
+    .architecture pre { color: #0f0; }
+
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+    }
+    .effect-card {
+      background: #111;
+      border: 1px solid #333;
+      padding: 10px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .effect-card:hover {
+      border-color: #0f0;
+      box-shadow: 0 0 15px rgba(0,255,0,0.3);
+    }
+    .effect-card img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 8px;
+    }
+    .effect-card .name { color: #0ff; font-size: 12px; }
+    .effect-card .class { color: #666; font-size: 10px; }
+
+    .credits {
+      text-align: center;
+      margin: 50px 0;
+      padding: 30px;
+      background: linear-gradient(135deg, #111 0%, #000 100%);
+      border: 1px solid #333;
+    }
+    .credits h3 { color: #ff0; margin-bottom: 20px; }
+    .credits p { margin: 10px 0; }
+    .credits .music { color: #f0f; }
+
+    .links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    .links a {
+      color: #0f0;
+      text-decoration: none;
+      padding: 15px 30px;
+      border: 2px solid #0f0;
+      transition: all 0.3s;
+    }
+    .links a:hover {
+      background: #0f0;
+      color: #000;
+    }
+
+    .footer {
+      text-align: center;
+      color: #666;
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>VIVID VIBES</h1>
+    <p class="tagline">Real-time demoscene effects running in SAP ABAP</p>
+
+    <div class="video-container">
+      <a href="https://youtu.be/4IAPLbqJ2Eo" target="_blank">
+        <img src="media/ZO4D_18_GLITCH.png" alt="Watch Demo Video">
+        <span class="play-btn">&#9658;</span>
+      </a>
+      <p style="margin-top: 10px; color: #888;">Click to watch on YouTube</p>
+    </div>
+
+    <div class="section">
+      <h2>// ARCHITECTURE</h2>
+      <div class="architecture">
+<pre>
+┌─────────────────────────┐           ┌─────────────────────────┐
+│         ABAP            │           │        Browser          │
+│    "Scene Engine"       │           │   "Video Processor"     │
+├─────────────────────────┤   JSON    ├─────────────────────────┤
+│  - Effect logic         │  ──────►  │  - Canvas 2D            │
+│  - 3D math              │ WebSocket │  - WebGL shaders        │
+│  - Scene transitions    │   (APC)   │  - Audio sync           │
+│  - Timeline/BPM sync    │           │  - CRT post-FX          │
+└─────────────────────────┘           └─────────────────────────┘
+       Calculates                           Renders
+       what to draw                         the frames
+</pre>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>// EFFECTS</h2>
+      <div class="effects-grid">
+        <div class="effect-card">
+          <img src="media/ZO4D_06_PLASMA.png" alt="Plasma">
+          <div class="name">Plasma</div>
+          <div class="class">ZCL_O4D_PLASMA</div>
+        </div>
+        <div class="effect-card">
+          <img src="media/ZO4D_05_COPPER.png" alt="Copper Bars">
+          <div class="name">Copper Bars</div>
+          <div class="class">ZCL_O4D_COPPERBARS</div>
+        </div>
+        <div class="effect-card">
+          <img src="media/ZO4D_09_ROTOZOOM.png" alt="Rotozoom">
+          <div class="name">Rotozoom</div>
+          <div class="class">ZCL_O4D_ROTOZOOM</div>
+        </div>
+        <div class="effect-card">
+          <img src="media/ZO4D_17_AMIGABALL.png" alt="Amiga Ball">
+          <div class="name">Amiga Ball</div>
+          <div class="class">ZCL_O4D_AMIGABALL</div>
+        </div>
+        <div class="effect-card">
+          <img src="media/ZO4D_24_METABALLS.png" alt="Metaballs">
+          <div class="name">Metaballs</div>
+          <div class="class">ZCL_O4D_METABALLS</div>
+        </div>
+        <div class="effect-card">
+          <img src="media/ZO4D_21_JOYDIV.png" alt="Joy Division">
+          <div class="name">Joy Division</div>
+          <div class="class">ZCL_O4D_JOYDIVISION</div>
+        </div>
+        <div class="effect-card">
+          <img src="media/ZO4D_12_TESSERACT.png" alt="Tesseract">
+          <div class="name">Tesseract (4D)</div>
+          <div class="class">ZCL_O4D_TESSERACT</div>
+        </div>
+        <div class="effect-card">
+          <img src="media/ZO4D_15_CELL120.png" alt="120-Cell">
+          <div class="name">120-Cell</div>
+          <div class="class">ZCL_O4D_CELL120</div>
+        </div>
+        <div class="effect-card">
+          <img src="media/ZO4D_23_QUATJULIA.png" alt="Quaternion Julia">
+          <div class="name">Quat Julia</div>
+          <div class="class">ZCL_O4D_QUATJULIA</div>
+        </div>
+        <div class="effect-card">
+          <img src="media/ZO4D_08_MOUNTAINS.png" alt="Mountains">
+          <div class="name">Mountains</div>
+          <div class="class">ZCL_O4D_MOUNTAINS</div>
+        </div>
+        <div class="effect-card">
+          <img src="media/ZO4D_10_VOXEL.png" alt="Voxel">
+          <div class="name">Voxel Landscape</div>
+          <div class="class">ZCL_O4D_VOXEL_LAND</div>
+        </div>
+        <div class="effect-card">
+          <img src="media/ZO4D_07_TWISTER.png" alt="Twister">
+          <div class="name">Twister</div>
+          <div class="class">ZCL_O4D_TWISTER</div>
+        </div>
+      </div>
+      <p style="text-align: center; margin-top: 20px; color: #888;">...and 30+ more effects!</p>
+    </div>
+
+    <div class="credits">
+      <h3>// CREDITS</h3>
+      <p><strong>Code:</strong> OISEE + Claude // 2025</p>
+      <p class="music"><strong>Music:</strong></p>
+      <p class="music">EA Rulez! by Oisee (AY-8910 1999 / rmx 2025)</p>
+      <p class="music">Ole Lukøjle by Oisee (AY-8910 2001 / rmx 2025)</p>
+      <p style="margin-top: 20px; color: #ff0; font-style: italic;">Demoscene meets Enterprise!</p>
+    </div>
+
+    <div class="links">
+      <a href="https://github.com/oisee/vivid-vibes">GitHub</a>
+      <a href="https://youtu.be/4IAPLbqJ2Eo">YouTube</a>
+      <a href="https://github.com/oisee/vibing-steampunk">Vibing Steampunk</a>
+    </div>
+
+    <div class="footer">
+      <p>Platform: SAP NetWeaver ABAP | Renderer: WebGL/Canvas via WebSocket</p>
+      <p>Resolution: 640x400 vectors | Frame rate: 20-60 fps</p>
+    </div>
+  </div>
+</body>
+</html>
