@@ -1,6 +1,8 @@
 # Vivid Vibes
 
-**Real-time demoscene effects running in SAP ABAP**
+**Probably the first ever demo for SAP ABAP**
+
+*Real-time demoscene effects running in SAP ABAP*
 
 [![Demo Video](./media/ZO4D_18_GLITCH.png)](https://youtu.be/4IAPLbqJ2Eo)
 
