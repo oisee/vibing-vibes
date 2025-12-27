@@ -2,7 +2,7 @@
 
 **Real-time demoscene effects running in SAP ABAP**
 
-[![Demo Video](https://img.youtube.com/vi/4IAPLbqJ2Eo/maxresdefault.jpg)](https://youtu.be/4IAPLbqJ2Eo)
+[![Demo Video](./media/ZO4D_18_GLITCH.png)](https://youtu.be/4IAPLbqJ2Eo)
 
 > Click the image above to watch the demo in action
 

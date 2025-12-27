@@ -1,0 +1,48 @@
+ZO4D SCREENSHOT CATALOG
+=======================
+For SMW0 upload to $ZO4D package
+
+#   FILE                      EFFECT                  SIZE
+--  ------------------------  ----------------------  ------
+00  ZO4D_00_SALES.png         SAP Sales Charts        9KB
+02  ZO4D_02_IGNITE.png        Particle Ignition       14KB
+05  ZO4D_05_COPPER.png        Copper Bars             10KB
+06  ZO4D_06_PLASMA.png        Plasma                  11KB
+07  ZO4D_07_TWISTER.png       Twist Zoomer            65KB
+08  ZO4D_08_MOUNTAINS.png     Mountains               12KB
+09  ZO4D_09_ROTOZOOM.png      Rotozoom                25KB
+10  ZO4D_10_VOXEL.png         Voxel Landscape         14KB
+11  ZO4D_11_ROTOPLASMA.png    Rotozoom + Plasma       25KB
+12  ZO4D_12_TESSERACT.png     4D Hypercube            22KB
+13  ZO4D_13_CELL24.png        24-Cell Polytope        44KB
+14  ZO4D_14_CELL16.png        16-Cell Polytope        16KB
+15  ZO4D_15_CELL120.png       120-Cell Polytope       59KB
+17  ZO4D_17_AMIGABALL.png     Amiga Bouncing Ball     15KB
+18  ZO4D_18_GLITCH.png        Glitch Effect           13KB
+19  ZO4D_19_SIERPINSKI.png    Sierpinski Triangle     14KB
+20  ZO4D_20_NEONCITY.png      Neon City               14KB
+21  ZO4D_21_JOYDIV.png        Joy Division Waves      19KB
+22  ZO4D_22_SIERPTET.png      Sierpinski Tetrahedron  28KB
+23  ZO4D_23_QUATJULIA.png     Quaternion Julia Set    129KB
+24  ZO4D_24_METABALLS.png     SDF Metaballs           10KB
+25  ZO4D_25_TORUS.png         3D Torus (Ray March)    11KB
+26  ZO4D_26_JULIAMORPH.png    Julia Fractal Morph     19KB
+27  ZO4D_27_CONSTELL.png      Constellation           9KB
+
+TOTAL: 24 files, ~600KB
+
+CATEGORIES
+----------
+Oldschool:    COPPER, PLASMA, ROTOZOOM, ROTOPLASMA, AMIGABALL
+3D/Vector:    TESSERACT, CELL24, CELL16, CELL120, TORUS
+Fractals:     SIERPINSKI, SIERPTET, QUATJULIA, JULIAMORPH
+Landscape:    MOUNTAINS, VOXEL, NEONCITY
+Audio/Viz:    JOYDIV, CONSTELL
+Effects:      IGNITE, GLITCH, TWISTER
+Data:         SALES
+
+SMW0 UPLOAD
+-----------
+Transaction: SMW0
+Relid: MIME
+Package: $ZO4D
