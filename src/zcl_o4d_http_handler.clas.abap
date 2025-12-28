@@ -86,9 +86,9 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    " Default: viewer HTML
+    " Default: megademo player
     server->response->set_header_field( name = 'Content-Type' value = 'text/html; charset=utf-8' ).
-    server->response->set_cdata( get_html( ) ).
+    server->response->set_cdata( get_megademo_html( ) ).
   ENDMETHOD.
 
   METHOD get_audio_from_smw0.
