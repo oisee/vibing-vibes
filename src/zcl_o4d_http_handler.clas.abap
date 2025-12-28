@@ -551,17 +551,16 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `if(DEMO_ID!=='main')ws.send(JSON.stringify({cmd:'load_demo',demo:DEMO_ID}));` &&
 `ws.send(JSON.stringify({cmd:'set_mode',mode:mode}));if(DEMO_ID==='main')ws.send(JSON.stringify({cmd:'get_scenario'}));};` &&
 `ws.onclose=function(){document.getElementById('info').textContent='DISCONNECTED';};` &&
-`ws.onmessage=function(e){console.log('MSG',e.data.substring(0,80));try{var d=JSON.parse(e.data);` &&
-`console.log('d.type=',d.type,'!d.type=',!d.type);if(d.type==='config'){ws.send(JSON.stringify({cmd:'get_scenario'}));}` &&
-`if(d.type==='scenario'){console.log('SCENARIO rx: bars=',d.total_bars,'bpm=',d.bpm,'fpt=',d.fpt,'audio=',d.audio);scenario=d;TOTAL_BARS=d.total_bars||116;BPM=d.bpm||152;FPT=d.fpt||1;BAR_SEC=240/BPM;` &&
+`ws.onmessage=function(e){try{var d=JSON.parse(e.data);if(d.type==='config'){ws.send(JSON.stringify({cmd:'get_scenario'}));}` &&
+`if(d.type==='scenario'){scenario=d;TOTAL_BARS=d.total_bars||116;BPM=d.bpm||152;FPT=d.fpt||1;BAR_SEC=240/BPM;` &&
 `SEC_PER_TICK=BAR_SEC/64;sI=SEC_PER_TICK*1000/FPT;FPS=d.fps||(1000/sI);` &&
 `if(d.audio)au.src='?audio='+d.audio;` &&
 `if(d.media){d.media.forEach(function(m){if(m.type==='img')loadGalleryImg(m.name);});}` &&
 `buildTimeline();updateInfoLine();}` &&
 `else if(d.type==='mode'){mode=d.mode;document.getElementById('b-mode').textContent=mode.toUpperCase();}` &&
 `else if(d.type==='preload'){handlePreloadFrame(d);}` &&
-`else if(!d.type){console.log('FRAME rx: lines=',d.lc,'rects=',d.rc,'texts=',d.tc,'effect=',d.e);rf(d);if(d.debug&&d.debug.frame!==undefined)frame=d.debug.frame;else if(playing)frame++;}}catch(x){console.error('ERR',x);}};}` &&
-`function play(){console.log('PLAY called, ws.readyState=',ws?ws.readyState:'null');if(!ws||ws.readyState!==1)return;cT=0;cS=0;lT=0;au.play();ws.send('start');playing=1;console.log('playing set to 1, calling rq()');` &&
+`else if(!d.type){rf(d);if(d.debug&&d.debug.frame!==undefined)frame=d.debug.frame;else if(playing)frame++;}}catch(x){}};}` &&
+`function play(){if(!ws||ws.readyState!==1)return;cT=0;cS=0;lT=0;au.play();ws.send('start');playing=1;` &&
 `document.getElementById('b-play').textContent='⏸ PAUSE';rq();}` &&
 `function pause(){if(ws&&ws.readyState===1)ws.send('stop');au.pause();playing=0;` &&
 `document.getElementById('b-play').textContent='▶ PLAY';}` &&
@@ -578,7 +577,7 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `function checkLoop(){if(!loopScene||!playing)return;var ct=au.currentTime;var endTime=loopScene.end_bar*BAR_SEC;` &&
 `if(ct>=endTime){au.currentTime=loopScene.start_bar*BAR_SEC;}}` &&
 `var FPT=1,sI=SEC_PER_TICK*1000/FPT,cT=0,cS=0,lT=0;` &&
-`function rq(){if(!playing){console.log('rq: not playing');return;}checkLoop();var n=performance.now();if(n-lT>=sI){lT=n;console.log('rq: tick=',cT,'sub=',cS,'sI=',sI);` &&
+`function rq(){if(!playing)return;checkLoop();var n=performance.now();if(n-lT>=sI){lT=n;` &&
 `var tt=au.currentTime/SEC_PER_TICK;cT=Math.floor(tt);cS=Math.floor((tt-cT)*FPT);` &&
 `if(ws&&ws.readyState===1)ws.send(JSON.stringify({cmd:'frame',tick:cT,sub:cS}));}requestAnimationFrame(rq);}` &&
 `function seekToBar(b,skipSync){if(!ws||ws.readyState!==1)return;cT=Math.floor(b*64);cS=0;lT=0;ws.send(JSON.stringify({cmd:'seek',bar:b}));` &&
@@ -792,8 +791,10 @@ CLASS zcl_o4d_http_handler IMPLEMENTATION.
 `document.getElementById('b-preload').onclick=function(){preloading?stopPreload():startPreloadAll();};` &&
 `document.getElementById('b-playcache').onclick=function(){cachedMode?stopCached():startCached();};` &&
 `document.getElementById('b-export').onclick=function(){exportMode?stopExport():startExport();};` &&
-`document.getElementById('b-export30').onclick=function(){startOfflineExport(30);};` &&
-`document.getElementById('b-export60').onclick=function(){startOfflineExport(60);};` &&
+`document.getElementById('b-export30').onclick=function(){startOfflineExport(30,'jpeg');};` &&
+`document.getElementById('b-png30').onclick=function(){startOfflineExport(30,'png');};` &&
+`document.getElementById('b-export60').onclick=function(){startOfflineExport(60,'jpeg');};` &&
+`document.getElementById('b-png60').onclick=function(){startOfflineExport(60,'png');};` &&
 `document.getElementById('b-probes').onclick=saveProbes;` &&
 `document.getElementById('b-trace').onclick=function(){traceMode?finishTrace():startTrace();};` &&
 `document.getElementById('b-reload').onclick=reloadCurrentScene;` &&

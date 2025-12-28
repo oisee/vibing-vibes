@@ -347,10 +347,10 @@ CLASS ZCL_O4D_APC_HANDLER IMPLEMENTATION.
       `                                                ` &&
       | 8-bit beam of greetings goes to:| &&
       | Scott Hanselman, Paul Modderman, Jelena Perfiljeva, Fred Huet, Holger Bruchelt, Dr. Philip Herzig, Level 9, Infocom, Amit Lal, Prof. Dr. Alexander Zeier, Marian Zeis,| &&
-      | Lars Hvam Petersen, Anthropic, Volker Buzek, Camunda, Filipp G., Claude, Parazite, Bizhuka, Sq, Kq, Thomas Jung, Enno Wulff, HallycinoJen, KiM BBS, Marcello Urbani, Martin Pankraz, Emma Qian,| &&
-      | Florian Farr, S. Novikov, Megus, SAP, Devraj Bardhan, IBM, Random/CC, Nora von Thenen, TSL, Mistral AI, Ivan Pirog, Nik-O, G_D, JtN, CyberJack, 4D, Triebkraft, Stardust, Gasman, BaZe,| &&
-      | Nova, Aki, Arwel Owen, Edgar Martinez, Dirk Roeckmann, Robin van het Hof, Yurii Sychov, Aλex Nihirash, Introspec, and you! Happy new year! Alice V.| &&
-      | This Oldschool ABAP demo "Vibing Vibes" was build with "Vibing-Steampunk" and Claude Code       |
+      | Lars Hvam Petersen, Anthropic, Volker Buzek, Camunda, Filipp G., Claude, Parazite, Bizhuka, Sq, Kq, Thomas Jung, Enno Wulff, HallycinoJen, KiM, Marcello Urbani, Martin Pankraz, Emma Qian,| &&
+      | Florian Farr, S. Novikov, Megus, SAP, Devraj Bardhan, IBM, Random/CC, Nora von Thenen, TSL, Mistral, Ivan Pirog, Nik-O, G_D, JtN, CyberJack, 4D, Triebkraft, Stardust, Gasman, BaZe,| &&
+      | Nova, Aki, Arwel Owen, Edgar Martinez, DJ Adams, Michael Keller, Dirk Roeckmann, 3SC, K3L, Robin van het Hof, Yurii Sychov, Aλex Nihirash, Introspec, and YOU! Happy new year! Alice V.| &&
+      | This Oldschool ABAP demo "Vibing Vibes" was built with "Vibing-Steampunk" and Claude Code       |
     ) )  TO lt_scenes.
 *
 *
